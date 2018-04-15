@@ -16,7 +16,14 @@ choco install git tortoisegit
 git clone https://github.com/Mahrvengers/Erforschung-der-Kraftmuschel.git
 ```
 
+## Welche Powershell-Version habe ich?
+
+```
+$PSVersionTable
+```
+
+
+
 ## coole Links
 
   - https://blogs.technet.microsoft.com/stephap/2012/04/23/building-forms-with-powershell-part-1-the-form/
-  
