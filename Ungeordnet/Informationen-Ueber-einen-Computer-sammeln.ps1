@@ -143,5 +143,23 @@ Get-DnsClientServerAddress
 # Wir können sogar in den DNS Cache gucken:
 Get-DnsClientCache
 
+# ----------------------------
+
+# Nächster Abschnitt: SMB Network Shares
+
+# Zunächst schauen wir wieder, welche Befehle wir hier verwenden können.
+Get-Command *smb*
+# Und werden wiederholt von der Masse an Möglichkeiten überrannt.
+
+help Get-SmbMapping -Examples
+
+Get-SmbMapping
+
+help New-SmbMapping
+help New-SmbMapping -Examples
+
+# CHALLENGE: Kannst du ein Netzwerklaufwerk mit Powershell einbinden?
+
+
 
 
