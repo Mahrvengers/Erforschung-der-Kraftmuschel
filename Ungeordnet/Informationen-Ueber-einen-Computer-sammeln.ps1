@@ -117,6 +117,31 @@ Get-EventLog -log System -Newest 1000 | Where-Object EventId -EQ '1074' | Format
 
 # ----------------------------
 
-# Nächster Abschnitt: Event Log
+# Nächster Abschnitt: IP und DNS
+
+# Wir alle kennen ipconfig und ipconfig /all...
+# Jetzt wollen wir das aber mit der Powershell ausprobieren.
+# Schauen wir zunächst, welche Befehle es da gibt:
+Get-Command *IP*
+
+# Wow sind das viele...
+# Die Get-NetIP... Commandlets sehen insbesondere gut aus.
+Get-NetIPAddress
+Get-NetIPConfiguration
+
+# Und wenn der Kunde ein Problem mit DNS hat?
+Get-Command *DNS*
+# Das waren wieder sehr viele. Wir sehen aber, dass es da was
+# zu einem DNS Client gibt und das ist ja der Rechner.
+Get-Command *DNSClient*
+
+# Und wir bemühen die Hilfe um uns einen Einblick zu verschaffen:
+help Get-DnsClient
+# Und gucken:
+Get-DnsClient
+Get-DnsClientServerAddress
+# Wir können sogar in den DNS Cache gucken:
+Get-DnsClientCache
+
 
 
