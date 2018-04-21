@@ -259,3 +259,71 @@ Get-Printer
 # Jetzt mögen wir ihn doch nicht und wollen ihn löschen:
 Remove-Printer -Name "Some printer in our printer list"
 
+# ----------------------------
+
+# Nächster Abschnitt: Active Directory
+
+# Commandlets für AD:
+Get-ADUser
+Search-ADAccount
+Get-ADComputer
+Get-ADGroup
+Get-ADGroupMember
+Add-ADGroupMember
+
+# Benutzerinformationen nachschlagen
+help *user*
+help Get-AdUser 
+help Get-AdUser -Examples
+
+Get-AdUser -Identity GlenJohn -Properties *
+
+# Suchen aller AD Benutzer, die sich ausgesperrt haben
+Search-ADAccount -LockedOut | Select Name
+
+# Suchen aller AD Benutzer, die deaktiviert sind
+Search-ADAccount -AccountDisabled | Select Name
+
+# Alle Computer in der Domäne auflisten
+Get-ADComputer -Filter *
+
+# Ein Computer angucken
+Get-ADComputer -Identity Client02 
+# Alle Properties anzeigen
+Get-ADComputer -Identity Client02 -Properties * | more
+
+# AD Gruppen:
+Get-Command *group*
+help Get-ADGroup
+help Get-ADGroup -Examples
+
+# Also z.B. Informationen für alle Administatoren auflisten:
+Get-ADGroup -Identity administrators
+
+# Alle Gruppen auflisten:
+Get-ADGroup -Filter * | more
+
+# Gruppe nach Namensstück suchen:
+Get-ADGroup -Filter * | Where Name -like "*admin*"
+
+# Das geht auch mit dem Filter:
+Get-ADGroup -Filter {Name -like "*admin*"}
+
+# Alle Mitglieder der Gruppe Administratoren auflisten
+Get-ADGroupMember -Identity "Administrators" | Select Name
+
+# Ein neues Mitglied hinzufügen
+Add-ADGroupMember -Identity "Administrators" -Members SqlServerJungeAccountName 
+
+# Alle Benutzer finden, die im Marketing arbeiten und im Seattle Branch arbeiten
+Get-ADUser -Filter * -Properties * | Get-Member | more
+
+Get-ADUser -Property Name,City,Department -filter {Department -eq "Marketing" -and City -eq "Seattle"} | Format-Table SamAccountName,City,Department -AutoSize
+
+# Und zum Boss schicken:
+Get-ADUser -Property Name,City,Department -filter {Department -eq "Marketing" -and City -eq "Seattle"} | Format-Table SamAccountName,City,Department -AutoSize > SeattleMarketing.txt
+
+
+
+
+
