@@ -195,6 +195,67 @@ Get-ChildItem # "dir"
 # So setzt man einen Schlüssel:
 # Set-ItemProperty -Path .\WiredBrainCoffee -Name PackageInstalled -Value 0
 
+# ----------------------------
 
+# Nächster Abschnitt: Dateien und Drucker
 
+help Get-ChildItem
+help Get-ChildItem -Examples
+
+# Rekursive Dateiauflistung
+Get-ChildItem -Path C: -Recurse
+# Nur Textdateien 
+Get-ChildItem -Path C: -Include *.txt -Recurse 
+
+# Wie funktioniert kopieren eigentlich?
+Get-Command *copy*
+
+help Copy-Item
+help Copy-Item -Examples
+
+# Beispiel
+Copy-Item M:\Source -Destination M:\Backup -Recurse -Verbose
+# -Verbose sorgt dafür, dass alle Teilschritte ausgegeben werden.
+
+# Ein Verzeichnis / eine Datei verschieben
+Move-Item C:\Backgrounds -Destination C:\MovedFolder -Verbose
+
+# Ein Verzeichnis umbenennen
+Rename-Item C:\MovedFolder -NewName C:\RenamedFolder
+
+# Zugriffsrechte ermitteln (Windows, der "exe-Weg")
+icacls.exe | more
+
+icacls.exe C:\DesktopBackgrounds
+
+# "Es gibt keinen einfachen Weg Zugriffsrechte auf Dateien mit der Powershell zu ermitteln"
+
+#
+# Jetzt: Drucker
+#
+Get-Command *printer*
+
+# Lokale Drucker
+Get-Printer
+
+# Sagen wir, du weißt, dass alle Drucker auf DC01 registriert sind.
+# Dann liste doch die auf... :)
+Get-Printer -ComputerName DC01
+
+# Wenn wir mehr Details brauchen, können wir ein Format-List anhängen.
+# Entweder als Format-List oder als fl (Kurzform)
+Get-Printer -ComputerName DC01 | Format-List
+
+# Es gibt da eine Property "ShareName". Das ist der Name, den wir 
+# nutzen um den Drucker lokal einzuhängen.
+# Wie sieht der Befehl aus?
+help add-printer -Examples
+
+Add-Printer -ConnectionName \\DC01\HPLaserJetMegaPrinter
+
+# Und schon haben wir einen weiteren Drucker installiert:
+Get-Printer
+
+# Jetzt mögen wir ihn doch nicht und wollen ihn löschen:
+Remove-Printer -Name "Some printer in our printer list"
 
