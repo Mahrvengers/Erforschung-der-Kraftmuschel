@@ -160,6 +160,41 @@ help New-SmbMapping -Examples
 
 # CHALLENGE: Kannst du ein Netzwerklaufwerk mit Powershell einbinden?
 
+# ----------------------------
+
+# Nächster Abschnitt: Ping & TraceRoute
+
+# Ping
+Test-Connection 8.8.8.8
+# TraceRoute
+Test-Connection 8.8.8.8 -TraceRoute
+# Ping + Port-Scan
+Test-Connection -CommonTcpPort HTTP -Computer pluralsight.com
+
+# ----------------------------
+
+# Nächster Abschnitt: Registry
+
+# Die Registry ist über ein System namens "Powershell-Provider" zugänglich.
+# Die Provider sind ein Set von "Treibern", die bestimmte Bereiche praktisch als 
+# Laufwerk zugänglich machen.
+# Im Ergebnis kann man dann mit Set-Location navigieren und mit Get-Item und 
+# Remove-Item und solcherlei CmdLets arbeiten.
+help Get-PSProvider
+
+# !Achtung!: Für Registry Zugriff benötigt man größtenteils Admin-Rechte!
+
+# Wir schauen uns an, welche Provider installiert sind:
+Get-PSProvider
+
+# Wir gehen in den HKEY LOCAL MACHINE:
+Set-Location HKLM:
+Set-Location Software
+Get-ChildItem # "dir"
+
+# So setzt man einen Schlüssel:
+# Set-ItemProperty -Path .\WiredBrainCoffee -Name PackageInstalled -Value 0
+
 
 
 
