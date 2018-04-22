@@ -130,6 +130,13 @@ Invoke-Command -ComputerName $Computername -ScriptBlock { Get-Service|Select Nam
 # wir so etwas schreiben:
 Invoke-Command -ComputerName $Computername -ScriptBlock { Get-Service|Select Name,Status }|Out-File C:\scripts\InvokeService.txt
 
+# CimSessions werden selten verwendet. Die spielen eine Rolle, wenn 
+# man mehrere Cmdlets oder Module vorliegen hat, die explizit keine
+# PSSession verwenden sollen. Eines dieser Module ist das DNS-Client Modul.
+
+Get-DNSClientServerAddress -CimSession (New-CimSession -Computername $Computername)
+
+
 
 
 
