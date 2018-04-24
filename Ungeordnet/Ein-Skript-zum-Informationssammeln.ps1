@@ -94,3 +94,65 @@ Foreach ($service in $services) {
 # ist nicht optional (mandatory).
 # Dann kannst du einen Computernamen angeben und von diesem dann 
 # die Liste aller Dienste mit ihrem Status erhalten.
+
+# -------------------------------------
+# Beispiel: 2 unterschiedliche Methoden um auf Eigenschaften zuzugreifen
+# -------------------------------------
+
+$operatingSystem = Get-CimInstance Win32_OperatingSystem | Select Caption
+$operatingSystem2 = (Get-CimInstance Win32_OperatingSystem).Caption
+
+$operatingSystem
+$operatingSystem2
+
+# Unterschied:
+#   - Im ersten Fall wird ein Objekt zurückgeliefert. Als eine Art 
+#     Liste von einem Objekt. Daher auch die tabellenartige Darstellung.
+#     Die Ausgabe dieses Aufrufs eignet sich zur Weiterverarbeitung durch
+#     weitere Pipes.
+#   - Im zweiten Fall wird nur die Zeichenkette zurückgegeben.
+
+# -------------------------------------
+# Ein Remote Info Sammel-Skript bauen (Prozess)
+#   1. Befehle in einer Powershell als Einzelbefehle ausprobieren
+#   2. Befehle in die ISE kopieren und Variablen und Parameter einbauen
+#   3. ggf. Logik für mehrere Computer einbauen
+#   4. Keep it simple
+# -------------------------------------
+
+# Es ist sinnvoll, jedes neue Skript mit einem 
+# Default-Template zu beginnen:
+
+<# Template: Template.ps1 #>
+
+<#
+.Synopsis
+    Short description
+
+.DESCRIPTION
+    Long description
+    
+.EXAMPLE
+    Example how to use this cmdlet
+.EXAMPLE
+    Another example
+#>
+
+<# 
+  - Script name
+  - Creator
+  - Date
+  - Updated
+  - References, if any
+#>
+
+# Parameters
+
+# Variables
+
+# Tasks as comments
+#   - make Mahrveltown great again
+
+<# Ende #>
+
+# Endgültiges Skript: siehe "Get-Helpdesksupport.ps1".
