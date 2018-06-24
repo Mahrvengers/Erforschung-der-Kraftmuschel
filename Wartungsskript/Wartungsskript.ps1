@@ -36,3 +36,22 @@ $Event | Group-Object -Property eventID,message | ForEach-Object {
     }
 #>
 
+
+# Übersicht Logs (Was sind die markanten Fehler?)
+$heute = Get-Date 
+$vor30Tagen = $heute.AddDays(-30).Date 
+$Event = Get-EventLog -log System -EntryType Error,Warning -after $vor30Tagen |select eventid,TimeGenerated,source,message  
+$Event | Group-Object -Property eventID,message | 
+    Sort-Object -Descending count |
+    Where-Object count -GT 1 | 
+    Select-Object count, name 
+    
+# 2. Wir brauchen den vollen Fehlertext für die wichtigsten Fehler
+
+$Event | 
+    Group-Object -Property eventID,message | 
+    Sort-Object -Descending count |
+    Where-Object count -GT 1 | 
+    Select-Object count, name | 
+    Format-List -Property * 
+    
