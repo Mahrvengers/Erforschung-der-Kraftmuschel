@@ -1,0 +1,14 @@
+table {
+    font-family: "Trebuchet MS";
+    font-size: 10px;
+    width: 100%;
+}
+
+th {
+    color : yellow;
+    background-color: black;
+}
+
+body {
+    background-color: orange;
+}
