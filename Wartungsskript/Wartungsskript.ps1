@@ -19,7 +19,6 @@
     10. Logs prüfen: bessere Übersicht über GUI
 #>
 
-
 # Dienste abrufen
 function Get-DiensteMitProblemen {
     <#
@@ -35,19 +34,39 @@ function Get-DiensteMitProblemen {
         Get-DiensteMitProblemen -InDialogAnzeigen
 
         Zeigt die Dienste mit Problemen in einem Dialog an.
+
+        .EXAMPLE 
+        Get-DiensteMitProblemen -ComputerName "C001-DC01","C002" -InDialogAnzeigen
+
+        Ruft die Dienste mit Herausforderungen von mehreren Rechnern ab und zeigt sie im Dialog an.
+
+        .EXAMPLE
+        Get-DiensteMitProblemen -ComputerName "C001-DC01","C002" | Start-Service
+
+        Startet auf allen angegebenen Computern die Dienste mit Herausforderungen neu.
     #>
     [CmdletBinding()]
     Param(
-        [Switch]$InDialogAnzeigen
+        [Switch]$InDialogAnzeigen,
+        [string[]]$ComputerName
     )
 
     Process {
-        $dienste = Get-Service | Where-Object {
-            $_.StartType -EQ "Automatic" -and $_.Status -NE "Running"
+        if ( $null -eq $ComputerName )
+        {
+            $dienste = Get-Service | Where-Object {
+                $_.StartType -EQ "Automatic" -and $_.Status -NE "Running"
+            }        
+        }
+        else
+        {
+            $dienste = Get-Service -ComputerName $ComputerName | Where-Object {
+                $_.StartType -EQ "Automatic" -and $_.Status -NE "Running"
+            }
         }
 
         if ( $InDialogAnzeigen ) {
-            $dienste | Select-Object Name, Status, DisplayName | Out-GridView -Title "Dienste, die automatisch starten sollten, aber nicht laufen"
+            $dienste | Select-Object MachineName, Name, Status, DisplayName | Out-GridView -Title "Dienste, die automatisch starten sollten, aber nicht laufen"
         }
         else 
         {
@@ -56,24 +75,32 @@ function Get-DiensteMitProblemen {
     }
 }
 
+function Get-EreignislogsDerLetzten30Tage {
+    <#
+        .SYNOPSIS
+        Gruppierte Anzeige der Fehler aus den Ereignislogs der letzten 30 Tage
 
+        .EXAMPLE 
+        Get-EreignislogsDerLetzten30Tage
+    #>
+    $heute = Get-Date 
+    $vor30Tagen = $heute.AddDays(-30).Date 
+    $Event = Get-EventLog -log System -EntryType Error,Warning -after $vor30Tagen |select eventid,TimeGenerated,source,message  
+    $Event | Group-Object -Property eventID,message | 
+        Sort-Object -Descending count |
+        Where-Object count -GT 1 | 
+        Select-Object count, name 
+}
 
 <#
-Get-Service | Where-Object {
-    $_.StartType -EQ "Automatic" -and $_.Status -NE "Running"
-}  | Out-GridView -Title "Dienste, die automatisch gestartet werden sollten, aber nicht laufen?" -Wait
-#>
+function Enable-RemoteEreignisprotokollverwaltung {
 
-# Ereignisse prüfen
-<#
-$heute = Get-Date
-$vor30Tagen = $heute.AddDays(-30).Date
-$Event = Get-EventLog -log System -EntryType Error,Warning -after $vor30Tagen |select eventid,TimeGenerated,source,message 
-$Event | Group-Object -Property eventID,message | ForEach-Object {
-    $_.Group | Out-GridView -Title $_.Name -Wait
-    }
-#>
+    Get-NetFirewallRule -DisplayGroup "Remote-Ereignisprotokollverwaltung" | Enable-NetFirewallRule 
 
+}
+
+ForEach ($Server in "C001-DC01","C002") {$Server; Get-WinEvent -ListLog "Windows PowerShell" -Computername $Server}
+#>
 
 <#
 # Übersicht Logs (Was sind die markanten Fehler?)
