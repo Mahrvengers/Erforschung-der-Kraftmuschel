@@ -88,7 +88,7 @@ function Get-EreignislogsDerLetzten30Tage {
     $Event = Get-EventLog -log System -EntryType Error,Warning -after $vor30Tagen |select eventid,TimeGenerated,source,message  
     $Event | Group-Object -Property eventID,message | 
         Sort-Object -Descending count |
-        Where-Object count -GT 1 | 
+        Where-Object { $_.count -GT 1 } | 
         Select-Object count, name 
 }
 
@@ -122,3 +122,5 @@ $Event |
     Format-List -Property * 
     
     #>
+
+
